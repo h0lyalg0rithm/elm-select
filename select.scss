@@ -1,0 +1,95 @@
+$gray : #e0e0e0;
+$selected-color : #68b828;
+
+.select-container {
+  width: 100%;
+  position: relative;
+  background: white;
+  &.select-open {
+    input {
+      display: block;
+      border: none;
+    }
+    ul {
+      display: block;
+    }
+  }
+  .no-item {
+    padding: 13px;
+    border: 1px solid $gray;
+  }
+  input {
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    display: block;
+    outline: none;
+    padding-left: 10px;
+    background: $gray;
+    display: none;
+    outline: none;
+    position: absolute;
+    z-index:2;
+  }
+  ul {
+    li {
+      list-style: none;
+      padding-left: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      width: 100%;
+      &:hover {
+        background: $selected-color;
+        cursor: pointer;
+        color: white;
+      }
+      &.item-selected {
+        background: $selected-color;
+        color: white;
+      }
+    }
+    max-height: 300px;
+    overflow-y: scroll;
+    z-index: 2;
+    background: white;
+    position: absolute;
+    top: 85px;
+    width: 100%;
+    padding: 0;
+    border-left: 1px solid $gray;
+    border-bottom: 1px solid $gray;
+    border-right: 1px solid $gray;
+    display: none;
+  }
+  .select-selected-value {
+    position: relative;
+    border: 1px solid $gray;
+    width: 100%;
+    height: 45px;
+    &:hover {
+      cursor: pointer;
+    }
+    .select-value {
+      padding: 12px;
+    }
+    .select-clear {
+      position: absolute;
+      right: 50px;
+      top: 0px;
+      padding: 13px;
+    }
+  }
+  .arrow-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px 16px;
+    background: $gray;
+    i {
+      font-size: 16px;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
