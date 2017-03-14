@@ -1,4 +1,4 @@
-module Select exposing (..)
+module Select exposing (Model, Msg, view, init, empty, getValue, updateItems)
 
 {-| This library handles the logic for the dropdown. To use the library you have to pass in the
 different options in the dropdown as a List of Tuple (String, Model)
@@ -8,6 +8,7 @@ The Model must be of the same type when in the list.
 Example
 [(1,{id=1, name="test"}),(2, {id=2, name="second"})]
 
+@docs Model, Msg, view, init, empty, getValue, updateItems
 -}
 
 import Html exposing (Html, div, input, i, li, ul, text, Attribute)
