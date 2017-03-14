@@ -1,5 +1,15 @@
 module Select exposing (..)
 
+{-| This library handles the logic for the dropdown. To use the library you have to pass in the
+different options in the dropdown as a List of Tuple (String, Model)
+
+The Model must be of the same type when in the list.
+
+Example
+[(1,{id=1, name="test"}),(2, {id=2, name="second"})]
+
+-}
+
 import Html exposing (Html, div, input, i, li, ul, text, Attribute)
 import Html.Attributes exposing (class, classList, value)
 import Html.Events exposing (on, onClick, onInput, keyCode, onWithOptions)
@@ -7,6 +17,8 @@ import String exposing (contains)
 import Json.Decode as Json
 
 
+{-| @docs Different Msg used for the internal working of the dropdown
+-}
 type Msg a
     = SelectValue ( String, a )
     | ClearValue
@@ -16,6 +28,8 @@ type Msg a
     | UpdateItems (List ( String, a )) (Maybe ( String, a ))
 
 
+{-| @docs Initial model generated based on the List (String , a) Tuple provided by the user
+-}
 init : List ( String, a ) -> Maybe ( String, a ) -> Model a
 init items defaultValue =
     { items = items
@@ -27,6 +41,8 @@ init items defaultValue =
     }
 
 
+{-| @docs Empty model helper - Can be used to initialize an empty Model
+-}
 empty : Model a
 empty =
     { items = []
@@ -38,6 +54,8 @@ empty =
     }
 
 
+{-| @docs Returns the selected value from the dropdown
+-}
 getValue : Model a -> Maybe a
 getValue model =
     case model.value of
@@ -48,6 +66,8 @@ getValue model =
             Just x
 
 
+{-| @docs Helper to generate new state of dropdown with the provided Model from the user
+-}
 updateItems : Model a -> List ( String, a ) -> Maybe ( String, a ) -> Model a
 updateItems model items selected =
     let
@@ -57,6 +77,9 @@ updateItems model items selected =
         update (SearchValue model1.searchValue) model1
 
 
+{-|
+@docs Internal model of the dropdown.
+-}
 type alias Model a =
     { items : List ( String, a )
     , value : Maybe ( String, a )
@@ -67,6 +90,9 @@ type alias Model a =
     }
 
 
+{-|
+@docs Dropdown view
+-}
 view : Model a -> Html (Msg a)
 view model =
     (div
@@ -80,11 +106,17 @@ view model =
     )
 
 
+{-|
+@docs Search View takes a the model as input to display the value that is being searched for
+-}
 searchView : Model a -> Html (Msg a)
 searchView model =
     input [ onInput SearchValue, onEnterKey EnteredValue, value model.searchValue ] []
 
 
+{-|
+@docs Values View is the view for all different items in the dropdown
+-}
 selectValuesView : Model a -> Html (Msg a)
 selectValuesView model =
     let
@@ -99,6 +131,9 @@ selectValuesView model =
         resultview
 
 
+{-|
+@docs Value View is the view for the individual item in the dropdown
+-}
 selectValueView : ( String, a ) -> Maybe ( String, a ) -> Html (Msg a)
 selectValueView value selectedValue =
     let
@@ -120,6 +155,9 @@ selectValueView value selectedValue =
             [ text val ]
 
 
+{-|
+@docs Selected View is the view for the item that is selected
+-}
 selectedView : Model a -> Html (Msg a)
 selectedView model =
     let
@@ -148,6 +186,7 @@ selectedView model =
             ]
 
 
+{-| -}
 onClear : Msg a -> Attribute (Msg a)
 onClear msg =
     onWithOptions "click"
@@ -157,11 +196,14 @@ onClear msg =
         (Json.succeed msg)
 
 
+{-| -}
 canClear : Bool -> String -> Bool
 canClear allowed val =
     not (allowed && not (val == ""))
 
 
+{-| @docs View to render the arrow in the dropdown
+-}
 arrowView : Bool -> Html (Msg a)
 arrowView open =
     let
@@ -175,6 +217,7 @@ arrowView open =
             [ i [ class arrowClass ] [] ]
 
 
+{-| -}
 onEnterKey : Msg a -> Attribute (Msg a)
 onEnterKey msg =
     let
@@ -187,6 +230,7 @@ onEnterKey msg =
         on "keydown" (Json.andThen isEnter keyCode)
 
 
+{-| -}
 update : Msg a -> Model a -> Model a
 update msg model =
     case msg of
